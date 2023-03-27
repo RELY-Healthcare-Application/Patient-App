@@ -6,31 +6,25 @@ const SquareTile = ({ imgSrc, color, text, onPress }) => {
     <TouchableOpacity onPress={() => onPress()}>
       <View
         style={{
-          height: 200,
-          width: 170,
           padding: 10,
-          margin: 10,
           borderRadius: 20,
-          opacity: 10,
           backgroundColor: color,
-          justifyContent: "center",
+          flex: 1,
           alignItems: "center",
+          justifyContent: "center",
+          margin: 5,
         }}
       >
-        <Image source={imgSrc} style={{ width: 70, height: 70, margin: 20 }} />
-        <Text style={{ fontSize: 12 }}>{text}</Text>
+        <Image
+          source={imgSrc}
+          style={{ width: 65, height: 65, marginBottom: 20 }}
+        />
+        <View style={{ width: 150, alignItems: "center" }}>
+          <Text style={{ fontSize: 12 }}>{text}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#2c3e50",
-  },
-});
 
 export default SquareTile;

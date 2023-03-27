@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import routes from "./routes";
-import { HomeScreen, ConsultationScreen, DocumentScreen } from "../screens/";
+import { HomeScreen, ConsultationScreen, DocumentScreen, VideoCall } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import DoctorListScreen from "../screens/doctor/DoctorsListScreen";
@@ -23,6 +23,11 @@ function HomeStackRenderer() {
       <HomeStack.Screen
         name={routes.DOCTOR_LIST}
         component={DoctorListScreen}
+      />
+
+      <HomeStack.Screen
+        name={routes.VIDEO}
+        component={VideoCall}
       />
     </HomeStack.Navigator>
   );
