@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Modal, Portal, List, Avatar } from "react-native-paper";
-import Header from "../../components/user/Header";
-import SpecializationsModal from "../../components/user/SpecializationsModal";
-import SquareTile from "../../components/user/SquareTile";
+import Header from "../../components/Header";
+import SpecializationsModal from "../../components/SpecializationsModal";
+import SquareTile from "../../components/SquareTile";
+import imagePaths from "../../constants/imagePaths";
 import routes from "../../navigation/routes";
 
 const HomeScreen = ({ navigation }) => {
@@ -34,13 +35,13 @@ const HomeScreen = ({ navigation }) => {
       <Header />
       <View style={styles.squareTiles}>
         <SquareTile
-          imgSrc={require("../../../assets/general-doc.png")}
+          imgSrc={imagePaths.quick_consultation}
           color={"#ECF9E3"}
           text={"Quick Consulatation"}
           onPress={() => {}}
         />
         <SquareTile
-          imgSrc={require("../../../assets/special-doc.png")}
+          imgSrc={imagePaths.specialist_consultation}
           color={"#F9E3E3"}
           text={"Specialist Consulatation"}
           onPress={showModal}

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-const SquareTile = ({ imgSrc, color, text, onPress }) => {
+const SquareTile = ({ imgSrc, imgAlt, color, text, onPress }) => {
   return (
     <TouchableOpacity onPress={() => onPress()}>
       <View
@@ -15,10 +15,15 @@ const SquareTile = ({ imgSrc, color, text, onPress }) => {
           margin: 5,
         }}
       >
-        <Image
-          source={imgSrc}
-          style={{ width: 65, height: 65, marginBottom: 20 }}
-        />
+        {imgSrc != null ? (
+          <Image
+            source={imgSrc}
+            style={{ width: 65, height: 65, marginBottom: 20 }}
+          />
+        ) : (
+          <Text style={{ fontSize: 50 }}>{imgAlt}</Text>
+        )}
+
         <View style={{ width: 150, alignItems: "center" }}>
           <Text style={{ fontSize: 12 }}>{text}</Text>
         </View>

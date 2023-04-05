@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import doctorSpecializations from "../../constants/doctorSpecializations";
-import routes from "../../navigation/routes";
+import doctorSpecializations from "../constants/doctorSpecializations";
+import routes from "../navigation/routes";
 
 const SpecializationsModal = ({ navigation, hideModal }) => {
   return (

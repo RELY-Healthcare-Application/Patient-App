@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { List, Avatar } from "react-native-paper";
 import routes from "../../navigation/routes";
+import { getAllDoctors } from "../../service/DoctorService";
 
 const randomRGB = () => {
   const red = Math.floor(Math.random() * 256);
@@ -17,23 +18,14 @@ const randomRGB = () => {
   return `rgb(${red},${green},${blue})`;
 };
 
-const DoctorListScreen = ({ route , navigation}) => {
+const DoctorListScreen = ({ route, navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const { specialization } = route.params;
+
   const getDoctors = async () => {
     try {
-      const response = await fetch(
-        `https://aefc-103-156-19-229.in.ngrok.io/api/v1/doctor/getAllDoctors`,{
-          headers:{
-            "ngrok-skip-browser-warning": "1",
-            Authorization:'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuc3NrMiIsImlhdCI6MTY3OTc0OTA5NywiZXhwIjoxNjc5ODM1NDk3fQ.pVtp6xi9iJJaXY3ePedsMALCVizrV1XvnlpdJvDsWPBApbe01qJVUo3brkr_3qEOpsh9aI5YFLsKeDNfW6owHw'
-        }
-        }
-      );
-      const json = await response.json();
-      console.log("###");
-      console.log(json);
+      const json = await getAllDoctors();
       setData(json);
     } catch (error) {
       console.error(error);
@@ -47,34 +39,38 @@ const DoctorListScreen = ({ route , navigation}) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, padding: 24, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <FlatList
-          data={data}
-          keyExtractor={({ id }) => id}
-          renderItem={({ item }) => (
-            <View style={styles.box}>
-              <List.Item
-                onPress={() => {
-                  console.log(item.fname);
-                  navigation.navigate(routes.VIDEO, {
-                    doctor: item,
-                  });
-                }}
-                title={`${item.fname} ${item.lname}`}
-                description={`${item.qualification}`}
-                left={(props) => (
-                  <Image
-                    source={require(`../../../assets/general-doc.png`)}
-                    style={{ width: 55, height: 55 }}
-                  />
-                )}
-              />
-            </View>
-          )}
-        />
+        <View style={styles.wrapper}>
+          <FlatList
+            data={data}
+            keyExtractor={({ id }) => id}
+            renderItem={({ item }) => (
+              <View style={styles.box}>
+                <List.Item
+                  onPress={() => {
+                    console.log(item.fname);
+                    navigation.navigate(routes.DOCTOR_DETAILS, {
+                      doctor: item,
+                    });
+                  }}
+                  titleStyle={{ color: "black" }}
+                  descriptionStyle={{ color: "gray" }}
+                  title={`${item.fname} ${item.lname}`}
+                  description={`${item.qualification}`}
+                  left={(props) => (
+                    <Image
+                      source={require(`../../../assets/general-doc.png`)}
+                      style={{ width: 55, height: 55 }}
+                    />
+                  )}
+                />
+              </View>
+            )}
+          />
+        </View>
       )}
     </View>
   );
@@ -83,14 +79,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    flexDirection: "column",
   },
+  wrapper: {},
   box: {
     height: 100,
-    width: "90%",
     padding: 10,
-    margin: 10,
-    borderRadius: 20,
+    marginHorizontal: 20,
+    marginVertical: 15,
+    borderRadius: 10,
     backgroundColor: "#F5ECFF",
   },
 });
