@@ -35,7 +35,7 @@ const getPrevConsultDetails = async (consultId) => {
 };
 
 const addConsultation = async (patientId, doctorId, startTime, followUp) => {
-  console.log("Creating new Consultation", followUp);
+  console.log("Creating new Consultation with followup", followUp);
   try {
     await refreshToken();
     const response = await axios.post(

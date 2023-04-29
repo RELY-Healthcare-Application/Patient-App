@@ -4,6 +4,7 @@ import { Alert, View, Text, StyleSheet } from "react-native";
 import { ActivityIndicator, Button, Portal, Modal } from "react-native-paper";
 import {
   addAndGetIndexFromQueue,
+  getDeferredPatientIndexFromQueue,
   getPatientIndexFromQueue,
   removePatientFromQueue,
 } from "../../service/DoctorService";
@@ -65,22 +66,34 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
     setBottomBarVisible(false);
 
     if (!leftQueue) {
-      const callGetIndex = async () => {
-        setLoading(true);
-        await addAndGetIndexFromQueue(
+      if (!index) {
+        const callGetIndex = async () => {
+          setLoading(true);
+          await addAndGetIndexFromQueue(
+            doctor.id,
+            patientId,
+            setIndex,
+            setAccept
+          );
+          setLoading(false);
+        };
+
+        callGetIndex();
+      }
+      if (index && accept != undefined) {
+        getDeferredPatientIndexFromQueue(
           doctor.id,
           patientId,
+          index,
+          accept,
           setIndex,
           setAccept
         );
-        setLoading(false);
-      };
+      }
 
-      callGetIndex();
+      // interval = setInterval(() => {
 
-      interval = setInterval(() => {
-        getPatientIndexFromQueue(doctor.id, patientId, setIndex, setAccept);
-      }, 2000);
+      // }, 2000);
     }
 
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
@@ -97,7 +110,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
       clearInterval(interval);
       unsubscribe();
     };
-  }, [navigation, joinedQueue, leftQueue]);
+  }, [navigation, joinedQueue, leftQueue, index, accept]);
 
   return (
     <View style={styles.container}>

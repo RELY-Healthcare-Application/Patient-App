@@ -86,6 +86,60 @@ const getPatientIndexFromQueue = async (
   }
 };
 
+const getDeferredPatientIndexFromQueue = async (
+  doctorId,
+  patientId,
+  index,
+  accept,
+  setIndex,
+  setAccept
+) => {
+  console.log("getDefferedPatientIndexFromQueue");
+  try {
+    await refreshToken();
+    console.log(
+      `${urlBase}/dqueue/getPatientIndex`,
+      {
+        patientId,
+        doctorId,
+        index,
+        accept,
+      },
+      await getConfig()
+    );
+    const response = await axios.post(
+      `${urlBase}/dqueue/getPatientIndex`,
+      {
+        patientId,
+        doctorId,
+        index,
+        accept,
+      },
+      await getConfig()
+    );
+    console.log("res", response.data);
+    setIndex(response.data.index);
+    setAccept(response.data.accept);
+    return response.data;
+  } catch (error) {
+    console.log(error.response.status);
+    if (error.response.status == 503) {
+      await refreshToken();
+      console.log("timeout fetchagain");
+      // getDeferredPatientIndexFromQueue(
+      //   doctorId,
+      //   patientId,
+      //   index,
+      //   accept,
+      //   setIndex,
+      //   setAccept
+      // );
+    } else {
+      Toast.show("Unable to fetch patient Index from queue", 10);
+    }
+  }
+};
+
 const addAndGetIndexFromQueue = async (
   doctorId,
   patientId,
@@ -163,4 +217,5 @@ export {
   getAllPatientsFromDqueue,
   getDoctorById,
   getDoctorsBySpecialisation,
+  getDeferredPatientIndexFromQueue,
 };
